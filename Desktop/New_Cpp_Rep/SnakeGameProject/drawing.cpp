@@ -3,11 +3,25 @@
 
 drawing::drawing()
 {
-    
+    Fruit = new fruit;
+    IsFruitEaten = false;
 }
 
 void drawing::showThecoordinates(int x_, int y_)
 {
+    if(x_ == Fruit -> Fx && y_ == Fruit -> Fy)
+    {
+        Fruit -> Fx = RandomNumberGenerator(20);
+        Fruit -> Fy = RandomNumberGenerator(10);
+        Points += 10;
+    }
+    
+    for(int i=0; i<5; i++) cout<<' ';
+    cout<<"Points: "<<Points;
+    for(int i=0; i<6; i++) cout<<' ';
+
+    cout<<"\n";
+    
     for(int i=0; i<=X+1; i++) cout<<'#';
     
     cout<<"\n";
@@ -19,24 +33,48 @@ void drawing::showThecoordinates(int x_, int y_)
  
         if(i == y_)
         {
-            for(int j=0; j<=X; j++)
+            if(i == Fruit -> Fy && Fruit -> Fx != x_)
             {
-                if(j == x_) cout<<skin;
-                else if( j != X ) cout<<" ";
-                else cout<<"#";
+                for(int j=0; j<=X; j++)
+                {
+                    if(j == Fruit -> Fx) cout<<'F';
+                    else if(j == x_) cout<<skin;
+                    else if( j != X ) cout<<" ";
+                }
+                cout<<"#";
             }
+            else
+            {
+                for(int j=0; j<=X; j++)
+                {
+                    if(j == x_) cout<<skin;
+                    else if( j != X ) cout<<" ";
+                    else cout<<"#";
+                }
+            }   
         }
         else
         {
-            for(int j=0; j<=X; j++)
+            if(i == Fruit -> Fy && Fruit -> Fy != y_)
             {
-                if(j != X) cout<<" ";
-                else cout<<'#';
+                for(int j=0; j<=X; j++)
+                {
+                    if(j == Fruit -> Fx) cout<<'F';
+                    else if( j != X ) cout<<" ";
+                    else cout<<"#";
+                }
+            }
+            else
+            {
+                for(int j=0; j<=X; j++)
+                {
+                    if(j != X) cout<<" ";
+                    else cout<<'#';
+                }
             }
         }
 
         
-
         cout<<"\n";
     }
 
@@ -45,6 +83,8 @@ void drawing::showThecoordinates(int x_, int y_)
     for(int i=0; i<=X+1; i++) cout<<'#';
 
     cout<<"\n";
+
+    
 }
 
 char drawing::moveup(int& x_, int& y_)
@@ -219,8 +259,10 @@ int drawing::RandomNumberGenerator(int a_)
 
     srand(time(NULL));
 
-    a = rand()%a_+1;
+    a = rand()%a_;
 
+    if(a == 0) a++;
+ 
     return a;
 }
 
