@@ -7,13 +7,14 @@ drawing::drawing()
     IsFruitEaten = false;
 }
 
-void drawing::showThecoordinates(int x_, int y_)
+void drawing::showThecoordinates(bool &fruitflag_)
 {
-    if(x_ == Fruit -> Fx && y_ == Fruit -> Fy)
+    if(SnakeHead -> x == Fruit -> Fx && SnakeHead -> y == Fruit -> Fy)
     {
         Fruit -> Fx = RandomNumberGenerator(20);
         Fruit -> Fy = RandomNumberGenerator(10);
         Points += 10;
+        fruitflag_ = true;
     }
     
     for(int i=0; i<5; i++) cout<<' ';
@@ -31,14 +32,14 @@ void drawing::showThecoordinates(int x_, int y_)
        
         for(int i=0; i<=X+1; i++) cout<<'\b'; cout<<'#';
  
-        if(i == y_)
+        if(i == SnakeHead -> y)
         {
-            if(i == Fruit -> Fy && Fruit -> Fx != x_)
+            if(i == Fruit -> Fy && Fruit -> Fx != SnakeHead -> x)
             {
                 for(int j=0; j<=X; j++)
                 {
                     if(j == Fruit -> Fx) cout<<'F';
-                    else if(j == x_) cout<<skin;
+                    else if(j == SnakeHead -> x) cout<<skin;
                     else if( j != X ) cout<<" ";
                 }
                 cout<<"#";
@@ -47,7 +48,7 @@ void drawing::showThecoordinates(int x_, int y_)
             {
                 for(int j=0; j<=X; j++)
                 {
-                    if(j == x_) cout<<skin;
+                    if(j == SnakeHead -> x) cout<<skin;
                     else if( j != X ) cout<<" ";
                     else cout<<"#";
                 }
@@ -55,7 +56,7 @@ void drawing::showThecoordinates(int x_, int y_)
         }
         else
         {
-            if(i == Fruit -> Fy && Fruit -> Fy != y_)
+            if(i == Fruit -> Fy && Fruit -> Fy != SnakeHead -> y)
             {
                 for(int j=0; j<=X; j++)
                 {
@@ -87,21 +88,21 @@ void drawing::showThecoordinates(int x_, int y_)
     
 }
 
-char drawing::moveup(int& x_, int& y_)
+char drawing::moveup(bool &fruitflag_)
 {   
     static bool f = false;
     char ch;
 
-    if(y_-1 >= 0)
+    if(SnakeHead -> y - 1 >= 0)
     {
         thread wait([&](){
               
-                while(!f && y_-1 >= 0)
+                while(!f && SnakeHead -> y - 1 >= 0)
                 {        
                   
-                    y_--;
+                    SnakeHead -> y--;
                     system("clear");
-                    showThecoordinates(x_, y_);
+                    showThecoordinates(fruitflag_);
                     sleep(1);
                 }
                 
@@ -121,26 +122,26 @@ char drawing::moveup(int& x_, int& y_)
     else
     {
         system("clear");
-        showThecoordinates(x_, y_);
+        showThecoordinates(fruitflag_);
     }
 
     return ch;
 }
 
-char drawing::movedown(int& x_, int& y_)
+char drawing::movedown(bool &fruitflag_)
 {
     static bool f = false;
     static char ch;
 
-    if(y_+1 <= Y)
+    if(SnakeHead -> y + 1 <= Y)
     {
         thread wait([&](){
             
-                while(!f && y_+1 <= Y)
+                while(!f && SnakeHead -> y + 1 <= Y)
                 {       
-                    y_++;
+                    SnakeHead -> y++;
                     system("clear");
-                    showThecoordinates(x_, y_);
+                    showThecoordinates(fruitflag_);
                     sleep(1);
                 }
            
@@ -160,27 +161,27 @@ char drawing::movedown(int& x_, int& y_)
     else
     {
         system("clear");
-        showThecoordinates(x_, y_);
+        showThecoordinates(fruitflag_);
     }
     
     return ch;
 }
 
-char drawing::moveleft(int& x_, int& y_)
+char drawing::moveleft(bool &fruitflag_)
 {
     static bool f = false;
     static char ch;
 
-    if(x_-1 > 0)
+    if(SnakeHead -> x - 1 > 0)
     {
         thread wait([&](){
             
 
-            while(!f && x_-1 > 0)
+            while(!f && SnakeHead -> x - 1 > 0)
             {       
-                x_--;
+                SnakeHead -> x--;
                 system("clear");
-                showThecoordinates(x_, y_);
+                showThecoordinates(fruitflag_);
                 sleep(1);
             
             }
@@ -202,27 +203,27 @@ char drawing::moveleft(int& x_, int& y_)
     else
     {
         system("clear");
-        showThecoordinates(x_, y_);
+        showThecoordinates(fruitflag_);
     }
 
     return ch;
 }
 
-char drawing::moveright(int& x_, int& y_)
+char drawing::moveright(bool &fruitflag_)
 {
     static bool f = false;
     static char ch;
 
-    if(x_+1 < X)
+    if(SnakeHead -> x + 1 < X)
     {
         thread wait([&](){
             
 
-                while(!f && x_+1 < X)
+                while(!f && SnakeHead -> x + 1 < X)
                 {       
-                    x_++;
+                    SnakeHead -> x++;
                     system("clear");
-                    showThecoordinates(x_, y_);
+                    showThecoordinates(fruitflag_);
                     sleep(1);
                 }
             
@@ -242,7 +243,7 @@ char drawing::moveright(int& x_, int& y_)
     else
     {
         system("clear");
-        showThecoordinates(x_, y_);
+        showThecoordinates(fruitflag_);
     }
 
     return ch;

@@ -14,6 +14,7 @@ struct snaketier
     int y;
     int speed = 1;
     char texture = 'O'; 
+    snaketier *next;
 };
 
 struct fruit
@@ -33,19 +34,23 @@ class drawing
         char skin;
     
     public:
-        fruit* Fruit;
+        fruit *Fruit;
+        snaketier *SnakeHead;
         bool IsFruitEaten;
         int Points = 0;
+        
+
         drawing();
-        ~drawing();
-        char moveup(int& _x, int& _y);
-        char moveleft(int& _x, int& _y);
-        char movedown(int& _x, int& _y);
-        char moveright(int& _x, int& _y);
+
+        char moveup(bool &_fruitflag);
+        char moveleft(bool &_fruitflag);
+        char movedown(bool &_fruitflag);
+        char moveright(bool &_fruitflag);
         int RandomNumberGenerator(int _a);
-        void showThecoordinates(int _x, int _y);
+        void showThecoordinates(bool &_fruitflag);
         void setSkin(char _ch);
 
+        ~drawing();
 };
 
 #endif
