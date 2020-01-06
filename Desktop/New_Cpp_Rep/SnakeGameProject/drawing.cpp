@@ -11,77 +11,69 @@ void drawing::showThecoordinates(bool &fruitflag_)
 {
     if(SnakeHead -> x == Fruit -> Fx && SnakeHead -> y == Fruit -> Fy)
     {
-        Fruit -> Fx = RandomNumberGenerator(20);
-        Fruit -> Fy = RandomNumberGenerator(10);
+        Fruit -> Fx = RandomNumberGenerator(19);
+        Fruit -> Fy = RandomNumberGenerator(9);
         Points += 10;
         fruitflag_ = true;
     }
-    
+
     for(int i=0; i<5; i++) cout<<' ';
     cout<<"Points: "<<Points;
     for(int i=0; i<6; i++) cout<<' ';
 
     cout<<"\n";
-    
-    for(int i=0; i<=X+1; i++) cout<<'#';
-    
-    cout<<"\n";
-    
-    for(int i=0; i<=Y; i++)
-    {
-       
-        for(int i=0; i<=X+1; i++) cout<<'\b'; cout<<'#';
- 
-        if(i == SnakeHead -> y)
-        {
-            if(i == Fruit -> Fy && Fruit -> Fx != SnakeHead -> x)
-            {
-                for(int j=0; j<=X; j++)
-                {
-                    if(j == Fruit -> Fx) cout<<'F';
-                    else if(j == SnakeHead -> x) cout<<skin;
-                    else if( j != X ) cout<<" ";
-                }
-                cout<<"#";
-            }
-            else
-            {
-                for(int j=0; j<=X; j++)
-                {
-                    if(j == SnakeHead -> x) cout<<skin;
-                    else if( j != X ) cout<<" ";
-                    else cout<<"#";
-                }
-            }   
-        }
-        else
-        {
-            if(i == Fruit -> Fy && Fruit -> Fy != SnakeHead -> y)
-            {
-                for(int j=0; j<=X; j++)
-                {
-                    if(j == Fruit -> Fx) cout<<'F';
-                    else if( j != X ) cout<<" ";
-                    else cout<<"#";
-                }
-            }
-            else
-            {
-                for(int j=0; j<=X; j++)
-                {
-                    if(j != X) cout<<" ";
-                    else cout<<'#';
-                }
-            }
-        }
 
-        
+    snaketier *tmp;
+    tmp = SnakeHead;
+
+
+    char charmap[Y][X];
+
+    for(int i=0; i<Y; i++)
+    {
+        for(int j=0; j<X; j++) 
+        {
+            charmap[i][j] = ' ';
+        }
+    }
+
+
+    for(int i=0; i<X; i++) charmap[0][i] = '#'; 
+
+    for(int i=1; i<Y-1; i++)
+    {
+        charmap[i][0] = '#';
+        charmap[i][X-1] = '#';
+    } 
+
+    for(int i=0; i<X; i++) charmap[Y-1][i] = '#'; 
+ 
+   
+    charmap[SnakeHead->y][SnakeHead->x] = 'o';
+    charmap[Fruit->Fy][Fruit->Fx] = 'F';
+    
+    /*
+    while(tmp != NULL)
+    {  
+        tmp = tmp -> next;
+    }
+    */
+   
+    for(int i=0; i<Y; i++)
+    {
+        for(int i=0; i<=X+1; i++) cout<<'\b';
+
+        for(int j=0; j<X; j++)
+        {
+            cout<<charmap[i][j];
+        }
         cout<<"\n";
     }
+    
 
     for(int i=0; i<=X+1; i++) cout<<'\b';
 
-    for(int i=0; i<=X+1; i++) cout<<'#';
+    //for(int i=0; i<=X; i++) cout<<'#';
 
     cout<<"\n";
 
@@ -96,10 +88,9 @@ char drawing::moveup(bool &fruitflag_)
     if(SnakeHead -> y - 1 >= 0)
     {
         thread wait([&](){
-              
-                while(!f && SnakeHead -> y - 1 >= 0)
+
+                while(!f && SnakeHead -> y - 1 > 0)
                 {        
-                  
                     SnakeHead -> y--;
                     system("clear");
                     showThecoordinates(fruitflag_);
@@ -137,7 +128,7 @@ char drawing::movedown(bool &fruitflag_)
     {
         thread wait([&](){
             
-                while(!f && SnakeHead -> y + 1 <= Y)
+                while(!f && SnakeHead -> y + 1 < Y-1)
                 {       
                     SnakeHead -> y++;
                     system("clear");
@@ -219,7 +210,7 @@ char drawing::moveright(bool &fruitflag_)
         thread wait([&](){
             
 
-                while(!f && SnakeHead -> x + 1 < X)
+                while(!f && SnakeHead -> x + 1 < X-1)
                 {       
                     SnakeHead -> x++;
                     system("clear");

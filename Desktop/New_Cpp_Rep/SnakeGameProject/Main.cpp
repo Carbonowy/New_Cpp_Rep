@@ -9,9 +9,15 @@ auto function = new drawing();
 
 int main()
 {
-    snaketier *Head;
+    snaketier *Head, *tmp1, *tmp2;
     Head = new snaketier;
     Head -> next = NULL;
+
+    Head -> x = 10; 
+    Head -> y = 5;
+
+    tmp1 = Head;
+    tmp2 = Head;
 
     function -> SnakeHead = Head;
 
@@ -49,7 +55,22 @@ int main()
 
         if(WasFruitEaten == true)
         {
+            tmp1 = new snaketier;
+            tmp2 -> next = tmp1;
+            tmp1 -> next = NULL;
+            
+            switch (ch)
+            {
+                case 'w': tmp1 -> y = tmp2 -> y--; break;
+                case 's': tmp1 -> y = tmp2 -> y++; break;
+                case 'a': tmp1 -> x = tmp2 -> x--; break;
+                case 'd': tmp1 -> x = tmp2 -> x++; break;
+                default: break;
+            }
+            
+            tmp2 = tmp1;
 
+            WasFruitEaten = false;   
         }
 
     }
