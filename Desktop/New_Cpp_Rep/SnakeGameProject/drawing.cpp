@@ -24,7 +24,7 @@ void drawing::showThecoordinates(bool &fruitflag_)
     cout<<"\n";
 
     snaketier *tmp;
-    tmp = SnakeHead;
+    tmp = SnakeHead -> next;
 
 
     char charmap[Y][X];
@@ -52,12 +52,13 @@ void drawing::showThecoordinates(bool &fruitflag_)
     charmap[SnakeHead->y][SnakeHead->x] = 'o';
     charmap[Fruit->Fy][Fruit->Fx] = 'F';
     
-    /*
+    
     while(tmp != NULL)
     {  
+        charmap[tmp->y][tmp->x] = 'o';
         tmp = tmp -> next;
     }
-    */
+    
    
     for(int i=0; i<Y; i++)
     {
@@ -84,14 +85,23 @@ char drawing::moveup(bool &fruitflag_)
 {   
     static bool f = false;
     char ch;
+    snaketier *tmp;
+    tmp = SnakeHead;
 
     if(SnakeHead -> y - 1 >= 0)
     {
         thread wait([&](){
 
                 while(!f && SnakeHead -> y - 1 > 0)
-                {        
-                    SnakeHead -> y--;
+                {       
+                    tmp = SnakeHead;
+
+                    while(tmp != NULL)
+                    {
+                        tmp -> y--;
+                        tmp = tmp -> next;
+                    }
+                    
                     system("clear");
                     showThecoordinates(fruitflag_);
                     sleep(1);
@@ -123,6 +133,9 @@ char drawing::movedown(bool &fruitflag_)
 {
     static bool f = false;
     static char ch;
+    snaketier *tmp;
+    tmp = SnakeHead;
+
 
     if(SnakeHead -> y + 1 <= Y)
     {
@@ -130,7 +143,13 @@ char drawing::movedown(bool &fruitflag_)
             
                 while(!f && SnakeHead -> y + 1 < Y-1)
                 {       
-                    SnakeHead -> y++;
+                    tmp = SnakeHead;
+
+                    while(tmp != NULL)
+                    {
+                        tmp -> y++;
+                        tmp = tmp -> next;
+                    }
                     system("clear");
                     showThecoordinates(fruitflag_);
                     sleep(1);
@@ -162,15 +181,23 @@ char drawing::moveleft(bool &fruitflag_)
 {
     static bool f = false;
     static char ch;
+    snaketier *tmp;
+    tmp = SnakeHead;
 
     if(SnakeHead -> x - 1 > 0)
     {
         thread wait([&](){
-            
 
             while(!f && SnakeHead -> x - 1 > 0)
             {       
-                SnakeHead -> x--;
+                tmp = SnakeHead;
+
+                while(tmp != NULL)
+                {
+                    tmp -> x--;
+                    tmp = tmp -> next;
+                }
+                
                 system("clear");
                 showThecoordinates(fruitflag_);
                 sleep(1);
@@ -204,15 +231,23 @@ char drawing::moveright(bool &fruitflag_)
 {
     static bool f = false;
     static char ch;
+    snaketier *tmp;
+    tmp = SnakeHead;
 
     if(SnakeHead -> x + 1 < X)
     {
         thread wait([&](){
-            
 
                 while(!f && SnakeHead -> x + 1 < X-1)
                 {       
-                    SnakeHead -> x++;
+                    tmp = SnakeHead;
+
+                    while(tmp != NULL)
+                    {
+                        tmp -> x++;
+                        tmp = tmp -> next;
+                    }
+
                     system("clear");
                     showThecoordinates(fruitflag_);
                     sleep(1);

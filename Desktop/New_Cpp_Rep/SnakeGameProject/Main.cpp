@@ -55,16 +55,24 @@ int main()
 
         if(WasFruitEaten == true)
         {
+            tmp2 = function -> SnakeHead;
+
+            while(tmp2 -> next != NULL)
+            {
+                tmp2 = tmp2 -> next;
+            }
+
+
             tmp1 = new snaketier;
             tmp2 -> next = tmp1;
             tmp1 -> next = NULL;
             
             switch (ch)
             {
-                case 'w': tmp1 -> y = tmp2 -> y--; break;
-                case 's': tmp1 -> y = tmp2 -> y++; break;
-                case 'a': tmp1 -> x = tmp2 -> x--; break;
-                case 'd': tmp1 -> x = tmp2 -> x++; break;
+                case 'w': tmp1 -> y = tmp2 -> y--; tmp1->x = tmp2->x; break;
+                case 's': tmp1 -> y = tmp2 -> y++; tmp1->x = tmp2->x; break;
+                case 'a': tmp1 -> x = tmp2 -> x--; tmp1->y = tmp2->y;break;
+                case 'd': tmp1 -> x = tmp2 -> x++; tmp1->y = tmp2->y;break;
                 default: break;
             }
             
