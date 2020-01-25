@@ -30,7 +30,7 @@ struct fruit
 class drawing
 {
     private:
-        const int X = 20, Y = 10;
+        const int X = 20, Y = 12;
         char skin;
     
     public:
@@ -38,7 +38,8 @@ class drawing
         snaketier *SnakeHead;
         bool IsFruitEaten;
         int Points = 0;
-        
+        int BendsPointX = 0, BendsPointY = 0;
+        WINDOW *win;
 
         drawing();
 
@@ -49,7 +50,9 @@ class drawing
         int RandomNumberGenerator(int _a);
         void showThecoordinates(bool &_fruitflag);
         void setSkin(char _ch);
-
+        bool addingnextsnaketier(bool WasFruitEaten, char _direction);
+        void creating_the_map();
+        
         ~drawing();
 };
 

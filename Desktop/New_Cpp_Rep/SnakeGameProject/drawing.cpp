@@ -5,79 +5,61 @@ drawing::drawing()
 {
     Fruit = new fruit;
     IsFruitEaten = false;
+
+    initscr();
+    win = newwin(Y,X,0,0);
+}
+
+void drawing::creating_the_map()
+{
+    string s = "POINTS:";
+
+    for(int i=5; i<=11; i++)
+    {
+        mvwaddch(win, 0, i, s[i-5]);
+    }
+
+    for(int i=0; i<20; i++)
+    {
+        mvwaddch(win, 2, i, '#');
+    }
+    
+    for(int i=0; i<20; i++)
+    {
+        mvwaddch(win, 11, i, '#');
+    }
+
+    for(int i=3; i<=11; i++)
+    {
+        mvwaddch(win, i, 0, '#');
+        mvwaddch(win, i, 19, '#');
+    }
 }
 
 void drawing::showThecoordinates(bool &fruitflag_)
 {
     if(SnakeHead -> x == Fruit -> Fx && SnakeHead -> y == Fruit -> Fy)
     {
+        mvwaddch(win, Fruit -> Fy, Fruit -> Fx, ' ');
+
         Fruit -> Fx = RandomNumberGenerator(19);
         Fruit -> Fy = RandomNumberGenerator(9);
+
+        mvwaddch(win, Fruit -> Fy, Fruit -> Fx, 'F');
+
         Points += 10;
         fruitflag_ = true;
     }
-
-    for(int i=0; i<5; i++) cout<<' ';
-    cout<<"Points: "<<Points;
-    for(int i=0; i<6; i++) cout<<' ';
-
-    cout<<"\n";
-
-    snaketier *tmp;
-    tmp = SnakeHead -> next;
-
-
-    char charmap[Y][X];
-
-    for(int i=0; i<Y; i++)
-    {
-        for(int j=0; j<X; j++) 
-        {
-            charmap[i][j] = ' ';
-        }
-    }
-
-
-    for(int i=0; i<X; i++) charmap[0][i] = '#'; 
-
-    for(int i=1; i<Y-1; i++)
-    {
-        charmap[i][0] = '#';
-        charmap[i][X-1] = '#';
-    } 
-
-    for(int i=0; i<X; i++) charmap[Y-1][i] = '#'; 
- 
-   
-    charmap[SnakeHead->y][SnakeHead->x] = 'o';
-    charmap[Fruit->Fy][Fruit->Fx] = 'F';
     
+    snaketier *tmp = SnakeHead;
     
-    while(tmp != NULL)
-    {  
-        charmap[tmp->y][tmp->x] = 'o';
-        tmp = tmp -> next;
-    }
+    while(tmp != NULL) tmp = tmp -> next;
+
+    mvwaddch(win, tmp -> y, SnakeHead -> x, 'o');
+
     
-   
-    for(int i=0; i<Y; i++)
-    {
-        for(int i=0; i<=X+1; i++) cout<<'\b';
-
-        for(int j=0; j<X; j++)
-        {
-            cout<<charmap[i][j];
-        }
-        cout<<"\n";
-    }
-    
-
-    for(int i=0; i<=X+1; i++) cout<<'\b';
-
-    //for(int i=0; i<=X; i++) cout<<'#';
-
-    cout<<"\n";
-
+    mvwaddch(win, SnakeHead -> y, SnakeHead -> x, 'o');
+    wrefresh(win);
     
 }
 
@@ -88,6 +70,7 @@ char drawing::moveup(bool &fruitflag_)
     snaketier *tmp;
     tmp = SnakeHead;
 
+    
     if(SnakeHead -> y - 1 >= 0)
     {
         thread wait([&](){
@@ -98,12 +81,13 @@ char drawing::moveup(bool &fruitflag_)
 
                     while(tmp != NULL)
                     {
+
                         tmp -> y--;
                         tmp = tmp -> next;
                     }
                     
-                    system("clear");
                     showThecoordinates(fruitflag_);
+                    fruitflag_ = addingnextsnaketier(fruitflag_, 'w');
                     sleep(1);
                 }
                 
@@ -112,19 +96,18 @@ char drawing::moveup(bool &fruitflag_)
         initscr();
    
         ch = getch();
+                
+            BendsPointX = SnakeHead -> x;
+            BendsPointY = SnakeHead -> y;
         
             f = true;
             wait.join();
 
         f = false;
 
-        system("clear");
     }
-    else
-    {
-        system("clear");
-        showThecoordinates(fruitflag_);
-    }
+    else    showThecoordinates(fruitflag_);
+   
 
     return ch;
 }
@@ -147,11 +130,14 @@ char drawing::movedown(bool &fruitflag_)
 
                     while(tmp != NULL)
                     {
+                        
+
                         tmp -> y++;
                         tmp = tmp -> next;
                     }
-                    system("clear");
+
                     showThecoordinates(fruitflag_);
+                    fruitflag_ = addingnextsnaketier(fruitflag_, 's');
                     sleep(1);
                 }
            
@@ -161,18 +147,17 @@ char drawing::movedown(bool &fruitflag_)
         initscr();
 
         ch = getch();
+
+            BendsPointX = SnakeHead -> x;
+            BendsPointY = SnakeHead -> y;
         
             f = true;
             wait.join();
         
-        system("clear");
         f = false;
     }
-    else
-    {
-        system("clear");
-        showThecoordinates(fruitflag_);
-    }
+    else    showThecoordinates(fruitflag_);
+    
     
     return ch;
 }
@@ -194,12 +179,13 @@ char drawing::moveleft(bool &fruitflag_)
 
                 while(tmp != NULL)
                 {
+                    
                     tmp -> x--;
                     tmp = tmp -> next;
                 }
                 
-                system("clear");
                 showThecoordinates(fruitflag_);
+                fruitflag_ = addingnextsnaketier(fruitflag_, 'a');
                 sleep(1);
             
             }
@@ -210,19 +196,18 @@ char drawing::moveleft(bool &fruitflag_)
         initscr();
 
         ch = getch();
+
+            BendsPointX = SnakeHead -> x;
+            BendsPointY = SnakeHead -> y;
        
             f = true;
             wait.join();
 
-        system("clear");
         f = false;
 
     }
-    else
-    {
-        system("clear");
-        showThecoordinates(fruitflag_);
-    }
+    else   showThecoordinates(fruitflag_);
+    
 
     return ch;
 }
@@ -244,12 +229,13 @@ char drawing::moveright(bool &fruitflag_)
 
                     while(tmp != NULL)
                     {
+                        
                         tmp -> x++;
                         tmp = tmp -> next;
                     }
 
-                    system("clear");
                     showThecoordinates(fruitflag_);
+                    fruitflag_ = addingnextsnaketier(fruitflag_, 'd');
                     sleep(1);
                 }
             
@@ -258,21 +244,55 @@ char drawing::moveright(bool &fruitflag_)
         initscr();
         
         ch = getch();
+
+            BendsPointX = SnakeHead -> x;
+            BendsPointY = SnakeHead -> y;
         
             f = true;
             wait.join();
 
-        system("clear");
+        \
         f = false;
 
     }
-    else
-    {
-        system("clear");
-        showThecoordinates(fruitflag_);
-    }
+    else   showThecoordinates(fruitflag_); 
 
     return ch;
+}
+
+bool drawing::addingnextsnaketier(bool WasFruitEaten, char direction_)
+{
+
+    if(WasFruitEaten == true)
+    {
+        snaketier *tmp1, *tmp2;
+
+        tmp2 = SnakeHead;
+
+        while(tmp2 -> next != NULL)
+        {
+            tmp2 = tmp2 -> next;
+        }
+
+
+        tmp1 = new snaketier;
+        tmp2 -> next = tmp1;
+        tmp1 -> next = NULL;
+            
+        switch (direction_)
+        {
+            case 'w': tmp1 -> y = tmp2 -> y + 1; tmp1->x = tmp2->x; break;
+            case 's': tmp1 -> y = tmp2 -> y - 1; tmp1->x = tmp2->x; break;
+            case 'a': tmp1 -> x = tmp2 -> x + 1; tmp1->y = tmp2->y; break;
+            case 'd': tmp1 -> x = tmp2 -> x - 1; tmp1->y = tmp2->y; break;
+            default: break;
+        }
+            
+        tmp2 = tmp1;
+
+        WasFruitEaten = false;   
+    }
+    return WasFruitEaten;
 }
 
 void drawing::setSkin(char ch_)
